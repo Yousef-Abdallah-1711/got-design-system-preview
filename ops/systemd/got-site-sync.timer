@@ -1,0 +1,12 @@
+[Unit]
+Description=Check for a new GØT storefront release every two minutes
+
+[Timer]
+OnBootSec=90s
+OnUnitActiveSec=2min
+RandomizedDelaySec=20s
+Persistent=true
+Unit=got-site-sync.service
+
+[Install]
+WantedBy=timers.target

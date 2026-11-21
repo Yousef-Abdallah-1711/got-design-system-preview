@@ -1,47 +1,51 @@
-# Preview deployment guide
+# Static preview deployment
 
-This repository contains the GØT design system and a browser-based storefront preview. It is a static UI demo. It does not process payments, create orders, save early-access signups, or connect to WooCommerce.
+This repository publishes a static GØT storefront preview to `https://got.rakmyat.online/` on the existing AWS EC2 host. The preview has sample products and browser-only cart behavior; it does not create orders, process payments, save signup data, or connect to WooCommerce.
 
-## Run locally
+The current host is the Servio staging instance. Its Caddy route must be added and released through the Servio deployment repository before the hostname can serve this site. The DNS A record already points to that host. Caddy will issue TLS after the explicit host route is installed. The current staging `noindex` response header is retained.
 
-From the project folder, run:
+## Automatic deployment from `main`
 
-```powershell
-python -m http.server 8767 --bind 127.0.0.1
+`.github/workflows/build-and-deploy.yml` runs on pull requests and pushes to `main`:
+
+1. The build job runs `tools/prepare_pages.py`, checks the prepared pages and local asset references with `tools/verify_pages.py`, and runs the release-sync safety checks.
+2. For a successful push to `main`, the publish job builds that exact commit again and publishes an immutable GitHub prerelease containing the static archive and its SHA-256 manifest.
+3. The EC2 host checks the public repository's `main` ref every two minutes. It deploys only an artifact whose tag and manifest match the current main commit and whose archive checksum matches. It extracts into a versioned directory and atomically switches the Caddy document root. The last five releases are retained for rollback.
+
+The host sync uses outbound HTTPS only. The workflow needs no SSH key, server password, Cloudflare token, AWS access key, or repository secret. Because the repository and its releases are public, deployment archives must contain only public static files.
+
+## One-time host setup
+
+After the Servio Caddy route for `got.rakmyat.online` is live, check out this repository on the EC2 host and install the restricted sync service as root:
+
+```bash
+sudo tools/install_host_sync.sh
+sudo systemctl list-timers got-site-sync.timer
+sudo journalctl -u got-site-sync.service -n 50 --no-pager
 ```
 
-Open <http://127.0.0.1:8767/>. The storefront can also be opened directly at `ui_kits/storefront/index.html`. Stop the local server with `Ctrl+C`.
+The service runs as the unprivileged `got-site` account. It can write only to `/var/lib/servio-deployer/public/got`; Caddy sees that directory through its existing read-only release mount. It does not have Docker, SSH, or general root access.
 
-## Publish a static preview with Cloudflare Pages
+## Build and inspect locally
 
-The build script assembles only the files needed by the preview into `dist/`. It leaves the source folder unchanged and excludes project planning and brand source documents from the published artifact.
-
-1. Push this repository to GitHub.
-2. In Cloudflare, open **Workers & Pages → Create application → Pages → Connect to Git** and select the repository.
-3. Set the production branch to `main`.
-4. Set the build command to `python tools/prepare_pages.py` and the build output directory to `dist`.
-5. Deploy. Cloudflare will provide a `*.pages.dev` preview URL. Each push to `main` triggers a new deployment; pull requests can use preview deployments.
-
-The published root redirects to the storefront at `/ui_kits/storefront/index.html`. External React, ReactDOM, Babel, and Google Fonts resources are loaded from their configured CDNs, so the visitor's browser needs internet access.
-
-## Connect a custom domain
-
-In the Cloudflare Pages project, open **Custom domains → Set up a domain** and enter a domain you control. Follow the DNS instructions Cloudflare displays for that domain. A subdomain such as `preview.example.com` usually needs a CNAME to the Pages hostname. An apex domain such as `example.com` must use the DNS records Cloudflare shows; do not guess or copy records from another project. Wait for DNS and TLS certificate activation, then verify both `https://your-domain/` and `https://your-domain/ui_kits/storefront/index.html`.
-
-If the domain's DNS is hosted elsewhere, add the exact records Cloudflare provides at that DNS provider. Do not change nameservers or existing production records unless you intend to move DNS management. A real domain can only be connected by someone with access to its DNS account.
-
-## What this deployment does and does not do
-
-The deployment hosts a public, static preview. It does not turn the prototype into a working shop. Catalog data and prices are samples; cart and wishlist behavior runs in the browser; checkout and account screens are demonstrations. Do not accept real customer data or orders through this preview.
-
-For the live store, deploy the separate Sage/Blade WordPress theme to PHP hosting with WordPress and WooCommerce, then configure products, stock, shipping, payment/COD, order email, customer accounts, privacy and legal pages, and the domain's production DNS. The design-system preview is a visual reference for that implementation, not a replacement for it.
-
-## Local build command
-
-Run the same artifact preparation locally with:
-
-```powershell
+```bash
 python tools/prepare_pages.py
+python tools/verify_pages.py
+python -m http.server 8767 --directory dist --bind 127.0.0.1
 ```
 
-The output is `dist/`. Preview the built artifact with `python -m http.server 8767 --directory dist --bind 127.0.0.1`.
+Open <http://127.0.0.1:8767/>. The root page links to `/ui_kits/storefront/index.html`. React, ReactDOM, Babel, and Google Fonts load from their configured CDNs, so browsers need internet access.
+
+## Rollback
+
+The normal rollback is a revert commit merged to `main`; the pipeline builds and publishes it and the host sync deploys it. To switch to a retained release immediately, stop the timer, move the `current` symlink to a known good 40-character SHA under `releases/`, then restart the timer after the source fix is ready:
+
+```bash
+sudo systemctl stop got-site-sync.timer
+sudo ln -s "releases/<known-good-sha>" /var/lib/servio-deployer/public/got/.current-rollback
+sudo mv -Tf /var/lib/servio-deployer/public/got/.current-rollback /var/lib/servio-deployer/public/got/current
+```
+
+## Production store limitations
+
+This is a visual prototype, not an online shop. Catalog data and prices are samples; cart and wishlist state runs in the browser; checkout and account screens are demonstrations. Do not collect customer data or orders through this preview. The live store still needs the separate Sage/Blade WordPress theme, WooCommerce, approved products, inventory, shipping, payment, email, customer accounts, privacy/legal pages, and production acceptance.
