@@ -21,6 +21,12 @@ def make_archive(entries: dict[str, bytes]) -> bytes:
 
 
 class GotSiteSyncTests(unittest.TestCase):
+    def test_host_installer_prepares_the_libexec_directory(self) -> None:
+        installer = Path(__file__).resolve().parents[1] / "tools/install_host_sync.sh"
+        content = installer.read_text(encoding="utf-8")
+
+        self.assertIn("install -d -o root -g root -m 0755 /usr/local/libexec", content)
+
     def test_publish_workflow_resolves_draft_release_from_releases_list(self) -> None:
         workflow = Path(__file__).resolve().parents[1] / ".github/workflows/build-and-deploy.yml"
         content = workflow.read_text(encoding="utf-8")
