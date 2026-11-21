@@ -1,0 +1,129 @@
+name: GØT Preview CI/CD
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: got-preview-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.12"
+
+      - name: Build and verify the static preview
+        run: |
+          python tools/prepare_pages.py
+          python tools/verify_pages.py
+
+      - name: Verify deployment sync safety checks
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+  publish:
+    name: publish verified main build
+    if: >-
+      github.repository == 'Yousef-Abdallah-1711/got-design-system-preview' &&
+      github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the exact main commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.12"
+
+      - name: Build and package the exact main commit
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+          RELEASE_TAG: got-preview-${{ github.sha }}
+        run: |
+          set -euo pipefail
+          python tools/prepare_pages.py
+          python tools/verify_pages.py
+          tar --sort=name --mtime='@0' --owner=0 --group=0 --numeric-owner \
+            -czf "$RUNNER_TEMP/site.tar.gz" -C dist .
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          archive = Path(os.environ["RUNNER_TEMP"]) / "site.tar.gz"
+          manifest = {
+              "schema_version": 1,
+              "repository": os.environ["REPOSITORY"],
+              "source_sha": os.environ["SOURCE_SHA"],
+              "release_tag": os.environ["RELEASE_TAG"],
+              "artifact": archive.name,
+              "artifact_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
+          }
+          (Path(os.environ["RUNNER_TEMP"]) / "deployment.json").write_text(
+              json.dumps(manifest, sort_keys=True) + "\n", encoding="utf-8"
+          )
+          PY
+
+      - name: Publish an immutable preview release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          tag="got-preview-$SOURCE_SHA"
+          if gh release view "$tag" --repo "$GH_REPO" >/dev/null 2>&1; then
+            is_draft="$(gh release view "$tag" --repo "$GH_REPO" --json isDraft --jq '.isDraft')"
+          else
+            gh release create "$tag" \
+              --repo "$GH_REPO" \
+              --target "$SOURCE_SHA" \
+              --title "GØT preview $SOURCE_SHA" \
+              --notes "Automated static preview build for main commit $SOURCE_SHA." \
+              --draft \
+              --prerelease
+            is_draft=true
+          fi
+
+          if [[ "$is_draft" == true ]]; then
+            assets="$(gh release view "$tag" --repo "$GH_REPO" --json assets --jq '.assets[].name')"
+            for name in site.tar.gz deployment.json; do
+              if ! grep -Fxq "$name" <<< "$assets"; then
+                gh release upload "$tag" "$RUNNER_TEMP/$name" --repo "$GH_REPO"
+              fi
+            done
+            release_id="$(gh api "repos/$GH_REPO/releases/tags/$tag" --jq '.id')"
+            gh api --method PATCH "repos/$GH_REPO/releases/$release_id" -F draft=false >/dev/null
+          else
+            assets="$(gh release view "$tag" --repo "$GH_REPO" --json assets --jq '.assets[].name')"
+            for name in site.tar.gz deployment.json; do
+              grep -Fxq "$name" <<< "$assets" || {
+                echo "Published release $tag is missing $name; refusing to replace it." >&2
+                exit 1
+              }
+            done
+            echo "Release $tag already exists and is immutable."
+          fi

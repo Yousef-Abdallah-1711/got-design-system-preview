@@ -1,0 +1,22 @@
+[Unit]
+Description=Sync the GØT storefront preview from its verified main release
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=got-site
+Group=got-site
+ExecStart=/usr/bin/python3 /usr/local/libexec/got-site-sync.py
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/servio-deployer/public/got
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=true
+MemoryMax=128M
+CPUQuota=25%
