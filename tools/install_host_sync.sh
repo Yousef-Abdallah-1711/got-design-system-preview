@@ -21,6 +21,7 @@ chmod 0710 /var/lib/servio-deployer
 
 install -d -o got-site -g got-site -m 0755 "$host_root"
 install -d -o got-site -g got-site -m 0755 "$host_root/releases"
+install -d -o root -g root -m 0755 /usr/local/libexec
 install -o root -g root -m 0755 "$repo_root/ops/got_site_sync.py" /usr/local/libexec/got-site-sync.py
 install -o root -g root -m 0644 "$repo_root/ops/systemd/got-site-sync.service" /etc/systemd/system/got-site-sync.service
 install -o root -g root -m 0644 "$repo_root/ops/systemd/got-site-sync.timer" /etc/systemd/system/got-site-sync.timer
