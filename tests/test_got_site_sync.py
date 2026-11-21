@@ -21,6 +21,14 @@ def make_archive(entries: dict[str, bytes]) -> bytes:
 
 
 class GotSiteSyncTests(unittest.TestCase):
+    def test_publish_workflow_resolves_draft_release_from_releases_list(self) -> None:
+        workflow = Path(__file__).resolve().parents[1] / ".github/workflows/build-and-deploy.yml"
+        content = workflow.read_text(encoding="utf-8")
+
+        self.assertIn('releases?per_page=100', content)
+        self.assertIn('select(.tag_name ==', content)
+        self.assertNotIn('releases/tags/$tag', content)
+
     def test_manifest_requires_exact_public_repo_sha_and_release_tag(self) -> None:
         sha = "a" * 40
         tag = f"got-preview-{sha}"
