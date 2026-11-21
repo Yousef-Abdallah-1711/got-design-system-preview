@@ -100,7 +100,7 @@ function App() {
   };
   const count = cart.reduce((a, i) => a + i.qty, 0);
   const nav = [{ label: 'Shop', key: 'shop' }, { label: 'Hoodies', key: 'shop', cat: 'Hoodies' }, { label: 'Accessories', key: 'shop', cat: 'Accessories' }, { label: 'About', key: 'home' }].map(n => ({ ...n, current: screen === 'shop' && n.key === 'shop' && (n.cat || 'All') === shopTab }));
-  const screens = [['coming', 'Coming soon'], ['home', 'Home'], ['shop', 'Shop'], ['product', 'Product'], ['checkout', 'Checkout'], ['thanks', 'Thank you'], ['confirm', 'Tracking'], ['wishlist', 'Wishlist'], ['account', 'Account']];
+  const screens = [['coming', 'Coming soon'], ['home', 'Home'], ['shop', 'Shop'], ['product', 'Product'], ['checkout', 'Checkout'], ['thanks', 'Thank you'], ['confirm', 'Tracking'], ['wishlist', 'Wishlist']];
   let body;
   if (screen === 'coming') body = <ComingSoon theme={theme} setTheme={setTheme} go={go} />;
   else {

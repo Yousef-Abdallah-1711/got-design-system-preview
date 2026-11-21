@@ -5,7 +5,7 @@ window.GOT_HOME = {
   announcements: [{ text: 'Not for everyone' }, { text: 'Drop 01 — Coming soon' }, { text: 'Forged to be different' }],
   hero: { eyebrow: 'Drop 01', title: ['Not for', 'everyone'], cta: 'Shop Drop 01' },
   drop: { id: 'Drop 01', title: 'Forged to be different', status: 'Coming soon' }, // approved pre-launch status
-  manifesto: ['Forged', 'to be', 'different'],
+  manifesto: ['Born', 'to be', 'different'],
   manifestoSupport: ['Not for everyone', 'Born to be different', 'More than just a hoodie'],
   spotlightProductId: 'h1', // WooCommerce "featured" flag
   packaging: [
