@@ -13,6 +13,7 @@ REQUIRED_FILES = (
     "styles.css",
     "_ds_bundle.js",
     "favicon.svg",
+    ".image-slots.state.json",
     "components/components.css",
     "ui_kits/storefront/index.html",
     "ui_kits/storefront/coming-soon.html",
@@ -37,6 +38,9 @@ def verify_required_files() -> None:
     missing = [name for name in REQUIRED_FILES if not (DIST / name).is_file()]
     if missing:
         raise RuntimeError("Missing preview files: " + ", ".join(missing))
+    root_page = (DIST / "index.html").read_text(encoding="utf-8")
+    if 'id="root"' not in root_page:
+        raise RuntimeError("The domain root is not the storefront application page")
 
 
 def verify_css_imports(stylesheet: Path, visited: set[Path] | None = None) -> None:

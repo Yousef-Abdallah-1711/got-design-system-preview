@@ -21,7 +21,13 @@ def main() -> None:
         shutil.rmtree(OUTPUT)
     OUTPUT.mkdir(parents=True)
 
-    for name in ("index.html", "styles.css", "_ds_bundle.js", "favicon.svg"):
+    for name in (
+        "index.html",
+        "styles.css",
+        "_ds_bundle.js",
+        "favicon.svg",
+        ".image-slots.state.json",
+    ):
         copy_file(ROOT / name, OUTPUT / name)
 
     for folder in ("tokens", "assets/icons"):
@@ -36,6 +42,10 @@ def main() -> None:
     for source in storefront.rglob("*"):
         if source.is_file() and source.suffix.lower() in {".html", ".css", ".js", ".jsx", ".json"}:
             copy_file(source, OUTPUT / source.relative_to(ROOT))
+
+    # Serve the interactive storefront at the domain root while keeping the
+    # original /ui_kits/storefront/index.html URL available as well.
+    copy_file(storefront / "index.html", OUTPUT / "index.html")
 
     print(f"Prepared static preview at {OUTPUT}")
 

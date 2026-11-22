@@ -34,7 +34,7 @@ python tools/verify_pages.py
 python -m http.server 8767 --directory dist --bind 127.0.0.1
 ```
 
-Open <http://127.0.0.1:8767/>. The root page links to `/ui_kits/storefront/index.html`. React, ReactDOM, Babel, and Google Fonts load from their configured CDNs, so browsers need internet access.
+Open <http://127.0.0.1:8767/>. The build serves the storefront directly at `/`; `/ui_kits/storefront/index.html` remains available too. React, ReactDOM, Babel, and Google Fonts load from their configured CDNs, so browsers need internet access.
 
 ## Rollback
 
