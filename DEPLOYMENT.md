@@ -12,6 +12,8 @@ The current host is the Servio staging instance. Its Caddy route must be added a
 2. For a successful push to `main`, the publish job builds that exact commit again and publishes an immutable GitHub prerelease containing the static archive and its SHA-256 manifest.
 3. The EC2 host checks the public repository's `main` ref every two minutes. It deploys only an artifact whose tag and manifest match the current main commit and whose archive checksum matches. It extracts into a versioned directory and atomically switches the Caddy document root. The last five releases are retained for rollback.
 
+The build stamps local static asset URLs with a release version. Caddy serves those versioned assets with a one-year immutable browser cache, compresses responses with Zstandard or gzip, and tells browsers to revalidate HTML on each visit so a new `main` deployment appears promptly. Unversioned static resources use a five-minute cache as a fallback.
+
 The host sync uses outbound HTTPS only. The workflow needs no SSH key, server password, Cloudflare token, AWS access key, or repository secret. Because the repository and its releases are public, deployment archives must contain only public static files.
 
 ## One-time host setup
