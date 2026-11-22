@@ -21,7 +21,7 @@ def main() -> None:
         shutil.rmtree(OUTPUT)
     OUTPUT.mkdir(parents=True)
 
-    for name in ("index.html", "styles.css", "_ds_bundle.js"):
+    for name in ("index.html", "styles.css", "_ds_bundle.js", "favicon.svg"):
         copy_file(ROOT / name, OUTPUT / name)
 
     for folder in ("tokens", "assets/icons"):
@@ -29,9 +29,12 @@ def main() -> None:
             if source.is_file() and source.suffix.lower() in {".css", ".svg"}:
                 copy_file(source, OUTPUT / source.relative_to(ROOT))
 
+    for source in (ROOT / "components").rglob("*.css"):
+        copy_file(source, OUTPUT / source.relative_to(ROOT))
+
     storefront = ROOT / "ui_kits" / "storefront"
     for source in storefront.rglob("*"):
-        if source.is_file() and source.suffix.lower() in {".html", ".css", ".js", ".jsx"}:
+        if source.is_file() and source.suffix.lower() in {".html", ".css", ".js", ".jsx", ".json"}:
             copy_file(source, OUTPUT / source.relative_to(ROOT))
 
     print(f"Prepared static preview at {OUTPUT}")
