@@ -12,8 +12,9 @@ function CmsSlot({ show, name, needs }) {
   );
 }
 
-function Mark({ id, className }) {
-  return <div className={'hm-slot ' + (className || '')} style={{ background: 'transparent' }}><image-slot id={id} shape="rect" fit="contain" placeholder="Sword monogram"></image-slot></div>;
+function Mark({ className }) {
+  const { Wordmark } = HS();
+  return <div className={'hm-slot hm-mark-slot ' + (className || '')} style={{ background: 'transparent' }} role="img" aria-label="GØT wordmark placeholder"><Wordmark size={32} /></div>;
 }
 
 function HmHero({ c, go }) {
@@ -21,7 +22,7 @@ function HmHero({ c, go }) {
   return (
     <section className="hm-hero" aria-labelledby="hm-hero-t">
       <div className="hm-hero__img hm-slot"><image-slot id="home-hero" shape="rect" placeholder="Drop 01 hero — real campaign photo (16:9 desktop / 4:5 mobile)" {...window.GOT_SLOT('hero', 1920, 1200)}></image-slot></div>
-      <Mark id="home-hero-mark" className="hm-hero__mark" />
+      <Mark className="hm-hero__mark" />
       <div className="hm-hero__in">
         <span className="hm-chip">{c.eyebrow} — {window.GOT_HOME.drop.status}</span>
         <h1 id="hm-hero-t" className="hm-hero__title">{c.title.map(t => <span key={t}>{t}</span>)}</h1>
@@ -97,7 +98,7 @@ function HmManifesto() {
       <div className="hm-wrap">
         <p className="hm-man__lines">{c.manifesto.map(l => <span key={l}>{l === 'different' ? <mark className="hm-mark">{l}</mark> : l}</span>)}</p>
         <div className="hm-man__foot">
-          <Mark id="home-manifesto-mark" className="hm-man__mark" />
+          <Mark className="hm-man__mark" />
           <span className="got-eyebrow">GØT / Manifesto</span>
           <ul className="hm-man__list">{c.manifestoSupport.map((l, i) => <li key={l}><span>0{i + 1}</span><span>{l}</span></li>)}</ul>
         </div>

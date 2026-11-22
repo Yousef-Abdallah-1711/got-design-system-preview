@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"GTDesignSystem_f9e073","components":[{"name":"CartDrawer","sourcePath":"components/commerce/CartDrawer.jsx"},{"name":"CartLine","sourcePath":"components/commerce/CartLine.jsx"},{"name":"OrderSummary","sourcePath":"components/commerce/OrderSummary.jsx"},{"name":"Price","sourcePath":"components/commerce/Price.jsx"},{"name":"ProductCard","sourcePath":"components/commerce/ProductCard.jsx"},{"name":"Badge","sourcePath":"components/core/Badge.jsx"},{"name":"Button","sourcePath":"components/core/Button.jsx"},{"name":"ICON_NAMES","sourcePath":"components/core/Icon.jsx"},{"name":"Icon","sourcePath":"components/core/Icon.jsx"},{"name":"IconButton","sourcePath":"components/core/IconButton.jsx"},{"name":"Wordmark","sourcePath":"components/core/Wordmark.jsx"},{"name":"Modal","sourcePath":"components/feedback/Modal.jsx"},{"name":"Notice","sourcePath":"components/feedback/Notice.jsx"},{"name":"Skeleton","sourcePath":"components/feedback/Skeleton.jsx"},{"name":"Checkbox","sourcePath":"components/forms/Checkbox.jsx"},{"name":"ColorSelector","sourcePath":"components/forms/ColorSelector.jsx"},{"name":"EarlyAccessForm","sourcePath":"components/forms/EarlyAccessForm.jsx"},{"name":"QuantityStepper","sourcePath":"components/forms/QuantityStepper.jsx"},{"name":"Select","sourcePath":"components/forms/Select.jsx"},{"name":"SizeSelector","sourcePath":"components/forms/SizeSelector.jsx"},{"name":"TextField","sourcePath":"components/forms/TextField.jsx"},{"name":"Accordion","sourcePath":"components/navigation/Accordion.jsx"},{"name":"AnnouncementBar","sourcePath":"components/navigation/AnnouncementBar.jsx"},{"name":"FilterBar","sourcePath":"components/navigation/FilterBar.jsx"},{"name":"Footer","sourcePath":"components/navigation/Footer.jsx"},{"name":"Header","sourcePath":"components/navigation/Header.jsx"},{"name":"ThemeToggle","sourcePath":"components/navigation/ThemeToggle.jsx"}],"sourceHashes":{"components/commerce/CartDrawer.jsx":"dab0dcad21fd","components/commerce/CartLine.jsx":"37f9cee91ba3","components/commerce/OrderSummary.jsx":"f911f5032341","components/commerce/Price.jsx":"44d06fb25214","components/commerce/ProductCard.jsx":"8a5dc1b3ce7c","components/core/Badge.jsx":"e3c9699334b5","components/core/Button.jsx":"0171cd41de44","components/core/Icon.jsx":"c24d57f29744","components/core/IconButton.jsx":"ee965449a761","components/core/Wordmark.jsx":"fa2398944739","components/feedback/Modal.jsx":"3e76a8fffeb7","components/feedback/Notice.jsx":"7f761500a67e","components/feedback/Skeleton.jsx":"ecf903d2a250","components/forms/Checkbox.jsx":"5c333c6f4f9a","components/forms/ColorSelector.jsx":"ba89699eaf5c","components/forms/EarlyAccessForm.jsx":"59333f3193e5","components/forms/QuantityStepper.jsx":"7133c70c288a","components/forms/Select.jsx":"a6c54583ed2b","components/forms/SizeSelector.jsx":"5a1c37535308","components/forms/TextField.jsx":"a4cb7674ebe8","components/navigation/Accordion.jsx":"d6cd8378364b","components/navigation/AnnouncementBar.jsx":"2d011eb9000c","components/navigation/FilterBar.jsx":"02e51afbd4f1","components/navigation/Footer.jsx":"4363d34db00f","components/navigation/Header.jsx":"dd8fba63312b","components/navigation/ThemeToggle.jsx":"c41ee9db2bdb","ui_kits/storefront/Account.jsx":"0e7fbcde4198","ui_kits/storefront/Checkout.jsx":"4d2e0264dfed","ui_kits/storefront/ComingSoon.jsx":"d6f01601f6b4","ui_kits/storefront/Confirmation.jsx":"5abe55567caa","ui_kits/storefront/DirectCheckout.jsx":"ad44be055f47","ui_kits/storefront/Home.jsx":"16136064521d","ui_kits/storefront/HomeSections.jsx":"1a42654a61f3","ui_kits/storefront/Product.jsx":"d67820e903b5","ui_kits/storefront/Shop.jsx":"d30c4c54c5d8","ui_kits/storefront/ThankYou.jsx":"87626a0414f9","ui_kits/storefront/data.js":"4c03d08cbee8","ui_kits/storefront/home-content.js":"f056c8454c81","ui_kits/storefront/image-slot.js":"fff26d081c8d"},"inlinedExternals":[],"unexposedExports":[{"name":"formatEGP","sourcePath":"components/commerce/Price.jsx"}]} */
+/* @ds-bundle: {"format":4,"namespace":"GTDesignSystem_f9e073","components":[{"name":"CartDrawer","sourcePath":"components/commerce/CartDrawer.jsx"},{"name":"CartLine","sourcePath":"components/commerce/CartLine.jsx"},{"name":"OrderSummary","sourcePath":"components/commerce/OrderSummary.jsx"},{"name":"Price","sourcePath":"components/commerce/Price.jsx"},{"name":"ProductCard","sourcePath":"components/commerce/ProductCard.jsx"},{"name":"Badge","sourcePath":"components/core/Badge.jsx"},{"name":"Button","sourcePath":"components/core/Button.jsx"},{"name":"ICON_NAMES","sourcePath":"components/core/Icon.jsx"},{"name":"Icon","sourcePath":"components/core/Icon.jsx"},{"name":"IconButton","sourcePath":"components/core/IconButton.jsx"},{"name":"Wordmark","sourcePath":"components/core/Wordmark.jsx"},{"name":"Modal","sourcePath":"components/feedback/Modal.jsx"},{"name":"Notice","sourcePath":"components/feedback/Notice.jsx"},{"name":"Skeleton","sourcePath":"components/feedback/Skeleton.jsx"},{"name":"Checkbox","sourcePath":"components/forms/Checkbox.jsx"},{"name":"ColorSelector","sourcePath":"components/forms/ColorSelector.jsx"},{"name":"EarlyAccessForm","sourcePath":"components/forms/EarlyAccessForm.jsx"},{"name":"QuantityStepper","sourcePath":"components/forms/QuantityStepper.jsx"},{"name":"Select","sourcePath":"components/forms/Select.jsx"},{"name":"SizeSelector","sourcePath":"components/forms/SizeSelector.jsx"},{"name":"TextField","sourcePath":"components/forms/TextField.jsx"},{"name":"Accordion","sourcePath":"components/navigation/Accordion.jsx"},{"name":"AnnouncementBar","sourcePath":"components/navigation/AnnouncementBar.jsx"},{"name":"FilterBar","sourcePath":"components/navigation/FilterBar.jsx"},{"name":"Footer","sourcePath":"components/navigation/Footer.jsx"},{"name":"Header","sourcePath":"components/navigation/Header.jsx"},{"name":"ThemeToggle","sourcePath":"components/navigation/ThemeToggle.jsx"}],"sourceHashes":{"components/commerce/CartDrawer.jsx":"dab0dcad21fd","components/commerce/CartLine.jsx":"37f9cee91ba3","components/commerce/OrderSummary.jsx":"f911f5032341","components/commerce/Price.jsx":"44d06fb25214","components/commerce/ProductCard.jsx":"8a5dc1b3ce7c","components/core/Badge.jsx":"e3c9699334b5","components/core/Button.jsx":"0171cd41de44","components/core/Icon.jsx":"c24d57f29744","components/core/IconButton.jsx":"ee965449a761","components/core/Wordmark.jsx":"fa2398944739","components/feedback/Modal.jsx":"3e76a8fffeb7","components/feedback/Notice.jsx":"7f761500a67e","components/feedback/Skeleton.jsx":"ecf903d2a250","components/forms/Checkbox.jsx":"5c333c6f4f9a","components/forms/ColorSelector.jsx":"ba89699eaf5c","components/forms/EarlyAccessForm.jsx":"59333f3193e5","components/forms/QuantityStepper.jsx":"7133c70c288a","components/forms/Select.jsx":"a6c54583ed2b","components/forms/SizeSelector.jsx":"5a1c37535308","components/forms/TextField.jsx":"a4cb7674ebe8","components/navigation/Accordion.jsx":"d6cd8378364b","components/navigation/AnnouncementBar.jsx":"2d011eb9000c","components/navigation/FilterBar.jsx":"02e51afbd4f1","components/navigation/Footer.jsx":"4363d34db00f","components/navigation/Header.jsx":"dd8fba63312b","components/navigation/ThemeToggle.jsx":"c41ee9db2bdb","ui_kits/storefront/Account.jsx":"0e7fbcde4198","ui_kits/storefront/Checkout.jsx":"4d2e0264dfed","ui_kits/storefront/ComingSoon.jsx":"d6f01601f6b4","ui_kits/storefront/Confirmation.jsx":"5abe55567caa","ui_kits/storefront/DirectCheckout.jsx":"ad44be055f47","ui_kits/storefront/Home.jsx":"16136064521d","ui_kits/storefront/HomeSections.jsx":"655d90df711f","ui_kits/storefront/Product.jsx":"d67820e903b5","ui_kits/storefront/Shop.jsx":"d30c4c54c5d8","ui_kits/storefront/ThankYou.jsx":"87626a0414f9","ui_kits/storefront/data.js":"4c03d08cbee8","ui_kits/storefront/home-content.js":"f056c8454c81","ui_kits/storefront/image-slot.js":"287cc853f24c"},"inlinedExternals":[],"unexposedExports":[{"name":"formatEGP","sourcePath":"components/commerce/Price.jsx"}]} */
 
 (() => {
 
@@ -2944,19 +2944,20 @@ function CmsSlot({
   }), needs));
 }
 function Mark({
-  id,
   className
 }) {
+  const {
+    Wordmark
+  } = HS();
   return /*#__PURE__*/React.createElement("div", {
-    className: 'hm-slot ' + (className || ''),
+    className: 'hm-slot hm-mark-slot ' + (className || ''),
     style: {
       background: 'transparent'
-    }
-  }, /*#__PURE__*/React.createElement("image-slot", {
-    id: id,
-    shape: "rect",
-    fit: "contain",
-    placeholder: "Sword monogram"
+    },
+    role: "img",
+    "aria-label": "GØT wordmark placeholder"
+  }, /*#__PURE__*/React.createElement(Wordmark, {
+    size: 32
   }));
 }
 function HmHero({
@@ -2976,7 +2977,6 @@ function HmHero({
     shape: "rect",
     placeholder: "Drop 01 hero \u2014 real campaign photo (16:9 desktop / 4:5 mobile)"
   }, window.GOT_SLOT('hero', 1920, 1200)))), /*#__PURE__*/React.createElement(Mark, {
-    id: "home-hero-mark",
     className: "hm-hero__mark"
   }), /*#__PURE__*/React.createElement("div", {
     className: "hm-hero__in"
@@ -3152,7 +3152,6 @@ function HmManifesto() {
   }, l) : l))), /*#__PURE__*/React.createElement("div", {
     className: "hm-man__foot"
   }, /*#__PURE__*/React.createElement(Mark, {
-    id: "home-manifesto-mark",
     className: "hm-man__mark"
   }), /*#__PURE__*/React.createElement("span", {
     className: "got-eyebrow"
@@ -4939,7 +4938,7 @@ try { (() => {
   // .frame img (clipped) and .spill (unclipped ghost + handles) share the
   // same left/top/width/height in frame-%, computed by _applyView(), so the
   // inside-mask crop and the outside-mask spill stay pixel-aligned.
-  '.frame img{position:absolute;max-width:none;transform:translate(-50%,-50%);' + '  -webkit-user-drag:none;user-select:none;touch-action:none}' +
+  '.frame img{position:absolute;max-width:none;transform:translate(-50%,-50%);' + '  -webkit-user-drag:none;user-select:none;touch-action:auto}' +
   // Reframe mode (double-click): the full image spills past the mask. The
   // spill layer is sized to the IMAGE bounds so its corners are where the
   // resize handles belong. The ghost <img> inside is translucent; the real

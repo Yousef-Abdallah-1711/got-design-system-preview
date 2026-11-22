@@ -7,6 +7,7 @@
 .hm-head .got-eyebrow{display:block;margin-bottom:var(--space-3)}
 .hm-slot{position:relative;background:var(--got-surface-2);overflow:hidden}
 .hm-slot>image-slot{position:absolute;inset:0}
+.hm-mark-slot{display:flex;align-items:center;justify-content:center}
 .hm-cms{position:relative;border:1px dashed var(--got-border-strong);padding:var(--space-8) var(--space-6);display:flex;flex-direction:column;gap:var(--space-3);align-items:flex-start}
 .hm-cms__tag{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:var(--tracking-mono);text-transform:uppercase;color:var(--color-warning)}
 
@@ -137,7 +138,9 @@
 
 /* Kit chrome */
 .kit-cms{display:flex;align-items:center;gap:6px;padding:0 8px;border-left:1px solid var(--got-border);font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--got-text-muted)}
-@media (max-width:767px){.kitnav{left:8px;right:8px;overflow-x:auto}}
+/* The screen switcher is prototype chrome; keep it off phone viewports so it
+   cannot cover the hero CTA or intercept page swipes near the bottom edge. */
+@media (max-width:767px){.kitnav{display:none}}
 
 /* v1.1 accent */
 .hm-chip{white-space:nowrap;justify-self:start;background:var(--accent);color:var(--on-accent);font-family:var(--font-mono);font-size:.6875rem;font-weight:var(--fw-medium);letter-spacing:var(--tracking-mono);text-transform:uppercase;padding:6px 10px}
