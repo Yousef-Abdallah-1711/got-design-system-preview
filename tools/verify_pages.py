@@ -3,7 +3,7 @@
 from html.parser import HTMLParser
 from pathlib import Path
 import re
-from urllib.parse import urlsplit
+from urllib.parse import parse_qsl, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,6 +21,10 @@ REQUIRED_FILES = (
     "ui_kits/storefront/.image-slots.state.json",
 )
 CSS_IMPORT = re.compile(r"@import\s+(?:url\(\s*)?([\"'])(.*?)\1\s*\)?[^;]*;", re.IGNORECASE)
+VERSIONED_SUFFIXES = {
+    ".css", ".js", ".jsx", ".json", ".svg", ".ico", ".png", ".jpg",
+    ".jpeg", ".webp", ".avif", ".woff", ".woff2",
+}
 
 
 class LocalAssetParser(HTMLParser):
@@ -41,6 +45,9 @@ def verify_required_files() -> None:
     root_page = (DIST / "index.html").read_text(encoding="utf-8")
     if 'id="root"' not in root_page:
         raise RuntimeError("The domain root is not the storefront application page")
+    slot_script = (DIST / "ui_kits" / "storefront" / "image-slot.js").read_text(encoding="utf-8")
+    if not re.search(r"const STATE_URL = STATE_FILE \+ ['\"]\?v=[a-f0-9]{20}['\"]", slot_script):
+        raise RuntimeError("The image-slot sidecar URL is not cache-versioned")
 
 
 def verify_css_imports(stylesheet: Path, visited: set[Path] | None = None) -> None:
@@ -56,6 +63,11 @@ def verify_css_imports(stylesheet: Path, visited: set[Path] | None = None) -> No
         parsed = urlsplit(reference)
         if parsed.scheme or parsed.netloc or not parsed.path:
             continue
+        if Path(parsed.path).suffix.lower() in VERSIONED_SUFFIXES and not any(
+            key == "v" and value for key, value in parse_qsl(parsed.query)
+        ):
+            relative_sheet = stylesheet.relative_to(DIST.resolve())
+            raise RuntimeError(f"CSS import has no cache version in {relative_sheet}: {reference}")
         target = (
             DIST / parsed.path.lstrip("/")
             if parsed.path.startswith("/")
@@ -76,6 +88,11 @@ def verify_local_references(page: Path) -> None:
         parsed = urlsplit(reference)
         if parsed.scheme or parsed.netloc or not parsed.path:
             continue
+        if Path(parsed.path).suffix.lower() in VERSIONED_SUFFIXES and not any(
+            key == "v" and value for key, value in parse_qsl(parsed.query)
+        ):
+            relative_page = page.relative_to(DIST)
+            raise RuntimeError(f"Local asset has no cache version in {relative_page}: {reference}")
         target = (
             DIST / parsed.path.lstrip("/")
             if parsed.path.startswith("/")
